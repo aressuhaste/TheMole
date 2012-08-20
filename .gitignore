@@ -4,3 +4,9 @@
 *.jar
 *.war
 *.ear
+/nbproject/private/
+/nbproject
+/build.xml
+/manifest.mf
+/lib/CopyLibs
+/lib/nblibraries.properties
