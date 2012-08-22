@@ -1,8 +1,11 @@
 package be.stijn.mole.view;
 
+import be.stijn.mole.controller.IPersonController;
 import be.stijn.mole.model.Person;
 import be.stijn.mole.model.PersonTableModel;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -17,28 +20,46 @@ import javax.swing.event.TableModelListener;
  * @since 20/08/2012 
  * @version 20120820.1 
  */
-public class PersonOverviewPanel extends JPanel {
-    private List<Person> persons;
-    private PersonTableModel ptModel;
+public class PersonOverviewPanel extends JPanel implements IPersonView {
+    private IPersonController controller;
+    private PersonTableModel model;
+    
     private StatusPanel statusPanel;
     private JTable personTable;
+    private JButton addButton;
+    private JButton removeButton;
 
-    public PersonOverviewPanel(List<Person> persons) {
-        this.persons = persons;
+    public PersonOverviewPanel() {
+        
     }
     
-    public void initGUI() {
+    @Override
+    public void initGui() {
         this.setLayout(new BorderLayout());
         
         JPanel actionPanel = new JPanel();
         this.add(actionPanel,BorderLayout.PAGE_START);
         
-        actionPanel.add(new JButton(IconManager.getInstance().getIcon(Icons.Add)));
-        actionPanel.add(new JButton(IconManager.getInstance().getIcon(Icons.Remove)));
-        //actionPanel.add(new JButton(IconManager.getInstance().getIcon(Icons.Remove)));
+        addButton =  new JButton(IconManager.getInstance().getIcon(Icons.Add));
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Person newPerson = controller.addNewPerson();
+            }
+        });
+        actionPanel.add(addButton);
         
-        this.ptModel = new PersonTableModel(persons);
-        this.ptModel.addTableModelListener(new TableModelListener() {
+        removeButton = new JButton(IconManager.getInstance().getIcon(Icons.Remove));
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.deletePersons(model.getPersons(personTable.getSelectedRows()));
+                
+            }
+        });
+        actionPanel.add(removeButton);
+        
+        this.model.addTableModelListener(new TableModelListener() {
 
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -46,7 +67,7 @@ public class PersonOverviewPanel extends JPanel {
             }
         });
         
-        personTable = new JTable(ptModel);
+        personTable = new JTable(model);
         personTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane sp = new JScrollPane(personTable);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -62,29 +83,31 @@ public class PersonOverviewPanel extends JPanel {
     public void setStatus(String status) {
         this.statusPanel.setStatus(status);
     }
-
-    public List<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
     
     private void setStatus() {
-        switch (ptModel.getAction().getActionType()) {
+        switch (model.getAction().getActionType()) {
             case FOUND:
-                statusPanel.setStatus(ptModel.getAction().getActionSize() + " people found.");
+                statusPanel.setStatus(model.getAction().getActionSize() + " people found.");
                 break;
             case NEW:
-                statusPanel.setStatus(ptModel.getAction().getActionSize() + " people added.");
+                statusPanel.setStatus(model.getAction().getActionSize() + " people added.");
                 break;
             case REMOVE:
-                statusPanel.setStatus(ptModel.getAction().getActionSize() + " people removed.");
+                statusPanel.setStatus(model.getAction().getActionSize() + " people removed.");
                 break;
         }
 
         personTable.repaint();
+    }
+
+    @Override
+    public void addController(IPersonController c) {
+        this.controller = c;
+    }
+
+    @Override
+    public void addModel(PersonTableModel m) {
+        this.model = m;
     }
 }
 

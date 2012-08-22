@@ -2,11 +2,10 @@ package be.stijn.mole.model;
 
 import be.stijn.mole.view.IconManager;
 import be.stijn.mole.view.Icons;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -85,5 +84,21 @@ public class PersonTableModel extends AbstractTableModel {
 
     public Action getAction() {
         return this.action;
+    }
+
+    /**
+     * Returns the Person objects at given rows.
+     * 
+     * @param rows array of row-indexes
+     * @return List of Person at given rows
+     */
+    public List<Person> getPersons(int[] rows) {
+        List<Person> returnValue = new ArrayList<>();
+        
+        for(int i = 0; i < rows.length; i++) {
+            returnValue.add(persons.get(rows[i]));
+        }
+        
+        return returnValue;
     }
 }

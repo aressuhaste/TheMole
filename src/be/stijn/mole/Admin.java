@@ -1,9 +1,6 @@
 package be.stijn.mole;
 
-import be.stijn.mole.dao.DataBaseManager;
 import be.stijn.mole.view.PersonOverviewPanel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -23,10 +20,10 @@ public class Admin {
             JFrame window = new JFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-            PersonOverviewPanel pop = new PersonOverviewPanel(DataBaseManager.getInstance().getAllPeople());
+            PersonOverviewPanel pop = new PersonOverviewPanel();
             window.getContentPane().add(pop);
             
-            pop.initGUI();
+            pop.initGui();
             
             window.pack();
             window.setVisible(true);
