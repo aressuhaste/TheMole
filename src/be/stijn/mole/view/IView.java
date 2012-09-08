@@ -4,10 +4,12 @@
  */
 package be.stijn.mole.view;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author Stijn Bouchier
  */
-public interface IView {
-    public void initGui();
+public abstract class IView extends JPanel{
+    public abstract void initGui();
 }

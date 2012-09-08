@@ -33,11 +33,21 @@ public class PersonController implements IPersonController{
     @Override
     public void addView(IPersonView v) {
         this.view = v;
+        
+        this.view.addController(this);
+        this.view.addModel(this.model);
+        
+        this.view.initGui();
     }
 
     @Override
     public void addModel(PersonTableModel m) {
         this.model = m;
+    }
+
+    @Override
+    public PersonTableModel getModel() {
+        return this.model;
     }
 
 }

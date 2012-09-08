@@ -1,5 +1,9 @@
 package be.stijn.mole;
 
+import be.stijn.mole.controller.IPersonController;
+import be.stijn.mole.controller.PersonController;
+import be.stijn.mole.dao.DataBaseManager;
+import be.stijn.mole.model.PersonTableModel;
 import be.stijn.mole.view.PersonOverviewPanel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,10 +24,13 @@ public class Admin {
             JFrame window = new JFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
+            IPersonController personController = new PersonController();
             PersonOverviewPanel pop = new PersonOverviewPanel();
-            window.getContentPane().add(pop);
             
-            pop.initGui();
+            personController.addModel(new PersonTableModel(DataBaseManager.getInstance().getAllPeople()));
+            personController.addView(pop);
+            
+            window.getContentPane().add(pop);
             
             window.pack();
             window.setVisible(true);

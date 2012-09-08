@@ -11,7 +11,7 @@ import be.stijn.mole.model.PersonTableModel;
  *
  * @author Stijn Bouchier
  */
-public interface IPersonView extends IView{
-    public void addController(IPersonController c);
-    public void addModel(PersonTableModel m);
+public abstract class IPersonView extends IView{
+    public abstract void addController(IPersonController c);
+    public abstract void addModel(PersonTableModel m);
 }

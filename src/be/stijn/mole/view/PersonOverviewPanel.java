@@ -6,7 +6,6 @@ import be.stijn.mole.model.PersonTableModel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,7 +19,7 @@ import javax.swing.event.TableModelListener;
  * @since 20/08/2012 
  * @version 20120820.1 
  */
-public class PersonOverviewPanel extends JPanel implements IPersonView {
+public class PersonOverviewPanel extends IPersonView {
     private IPersonController controller;
     private PersonTableModel model;
     
@@ -54,13 +53,11 @@ public class PersonOverviewPanel extends JPanel implements IPersonView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.deletePersons(model.getPersons(personTable.getSelectedRows()));
-                
             }
         });
         actionPanel.add(removeButton);
         
         this.model.addTableModelListener(new TableModelListener() {
-
             @Override
             public void tableChanged(TableModelEvent e) {
                 setStatus();

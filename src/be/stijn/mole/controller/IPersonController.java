@@ -16,4 +16,6 @@ public interface IPersonController {
     
     public void addView(IPersonView v);
     public void addModel(PersonTableModel m);
+
+    public PersonTableModel getModel();
 }
