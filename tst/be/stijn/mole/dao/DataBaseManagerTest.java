@@ -4,6 +4,7 @@
  */
 package be.stijn.mole.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -37,11 +38,13 @@ public class DataBaseManagerTest {
      * Test of getAllPeople method, of class DataBaseManager.
      */
     @Test
-    public void testGetAllPeople() {
+    public void testGetAllPeople() throws SQLException, ClassNotFoundException {
         System.out.println("getAllPeople");
         DataBaseManager instance = DataBaseManager.getInstance();
         int expResult = 25;
         List result = instance.getAllPeople();
         assertEquals(expResult, result.size());
     }
+    
+    
 }

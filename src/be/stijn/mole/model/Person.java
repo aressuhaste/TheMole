@@ -13,6 +13,12 @@ public class Person {
     private String name;
     private String email;
 
+    public Person() {
+        this.id = -1;
+        this.name = "";
+        this.email = "";
+    }
+
     public Person(int id, String name, String email) {
         this.id = id;
         this.name = name;
@@ -37,5 +43,9 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

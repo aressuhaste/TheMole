@@ -4,12 +4,11 @@ import be.stijn.mole.controller.IPersonController;
 import be.stijn.mole.model.Person;
 import be.stijn.mole.model.PersonTableModel;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -23,7 +22,7 @@ public class PersonOverviewPanel extends IPersonView {
     private IPersonController controller;
     private PersonTableModel model;
     
-    private StatusPanel statusPanel;
+    //private StatusPanel statusPanel;
     private JTable personTable;
     private JButton addButton;
     private JButton removeButton;
@@ -32,6 +31,10 @@ public class PersonOverviewPanel extends IPersonView {
         
     }
     
+    /**
+     * Implementation of initGui. Creates the GUI elements and places them 
+     * as required.
+     */
     @Override
     public void initGui() {
         this.setLayout(new BorderLayout());
@@ -44,6 +47,8 @@ public class PersonOverviewPanel extends IPersonView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Person newPerson = controller.addNewPerson();
+                
+                JDialog dialog = new PersonDialog(newPerson, PersonDialog.PersonDialogAction.ADD, controller, getFrame());
             }
         });
         actionPanel.add(addButton);
@@ -60,7 +65,7 @@ public class PersonOverviewPanel extends IPersonView {
         this.model.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                setStatus();
+                personTable.repaint();
             }
         });
         
@@ -71,31 +76,31 @@ public class PersonOverviewPanel extends IPersonView {
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.add(sp,BorderLayout.CENTER);
         
-        statusPanel = new StatusPanel();
-        statusPanel.initGui();
-        setStatus();
-        this.add(statusPanel,BorderLayout.PAGE_END);
+        //statusPanel = new StatusPanel();
+        //statusPanel.initGui();
+        //setStatus();
+        //this.add(statusPanel,BorderLayout.PAGE_END);
     }
     
-    public void setStatus(String status) {
-        this.statusPanel.setStatus(status);
-    }
+    //public void setStatus(String status) {
+    //    this.statusPanel.setStatus(status);
+    //}
     
-    private void setStatus() {
-        switch (model.getAction().getActionType()) {
-            case FOUND:
-                statusPanel.setStatus(model.getAction().getActionSize() + " people found.");
-                break;
-            case NEW:
-                statusPanel.setStatus(model.getAction().getActionSize() + " people added.");
-                break;
-            case REMOVE:
-                statusPanel.setStatus(model.getAction().getActionSize() + " people removed.");
-                break;
-        }
+    //public void setStatus() {
+    //    switch (model.getAction().getActionType()) {
+    //       case FOUND:
+    //            statusPanel.setStatus(model.getAction().getActionSize() + " people found.");
+    //            break;
+    //        case NEW:
+    //            statusPanel.setStatus(model.getAction().getActionSize() + " people added.");
+    //            break;
+    //       case REMOVE:
+    //            statusPanel.setStatus(model.getAction().getActionSize() + " people removed.");
+    //            break;
+    //    }
 
-        personTable.repaint();
-    }
+    //    personTable.repaint();
+    //}
 
     @Override
     public void addController(IPersonController c) {
@@ -105,6 +110,22 @@ public class PersonOverviewPanel extends IPersonView {
     @Override
     public void addModel(PersonTableModel m) {
         this.model = m;
+    }
+    
+    /**
+     * Gets the Frame the panel belongs to.
+     * @return the Frame
+     */
+    private Frame getFrame() {
+        Component c = getParent();  
+        while( c.getParent() != null )  
+        {  
+            c = c.getParent();  
+        }  
+    
+        Frame topFrame = ( Frame )c;
+        
+        return topFrame;
     }
 }
 
