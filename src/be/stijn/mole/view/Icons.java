@@ -12,7 +12,9 @@ public enum Icons {
     Remove("remove.png"),
     Save("save.png"),
     Persons("people.png"),
-    Cancel("cancel.png");
+    Cancel("cancel.png"),
+    Game("game.png"),
+    Games("games.png");
     
     private String iconName;
 

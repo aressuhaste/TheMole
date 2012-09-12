@@ -190,4 +190,14 @@ public class PersonTableModel extends AbstractTableModel {
         if(persons.contains(p))
             fireTableDataChanged();
     }
+
+    /**
+     * Returns the {@link Person} object at given row-index.
+     * 
+     * @param rowIndex row-index 
+     * @return the Person object at given row
+     */
+    public Person getPerson(int rowIndex) {
+        return persons.get(rowIndex);
+    }
 }

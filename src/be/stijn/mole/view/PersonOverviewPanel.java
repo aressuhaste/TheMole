@@ -8,6 +8,8 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -70,7 +72,17 @@ public class PersonOverviewPanel extends IPersonView {
         });
         
         personTable = new JTable(model);
-        personTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        personTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        
+        personTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JDialog dialog = new PersonDialog(model.getPerson(personTable.getSelectedRow()), PersonDialog.PersonDialogAction.EDIT, controller, getFrame());
+                }
+            }
+        });
+        
         JScrollPane sp = new JScrollPane(personTable);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

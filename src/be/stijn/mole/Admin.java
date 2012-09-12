@@ -4,14 +4,13 @@ import be.stijn.mole.controller.IPersonController;
 import be.stijn.mole.controller.PersonController;
 import be.stijn.mole.dao.DataBaseManager;
 import be.stijn.mole.model.PersonTableModel;
+import be.stijn.mole.view.IconManager;
+import be.stijn.mole.view.Icons;
+import be.stijn.mole.view.MoleFrame;
 import be.stijn.mole.view.PersonOverviewPanel;
+import java.awt.Dimension;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 
 /**
  *
@@ -24,8 +23,9 @@ public class Admin {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             
-            JFrame window = new JFrame();
+            MoleFrame window = new MoleFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            window.initGui();
             
             IPersonController personController = new PersonController();
             PersonOverviewPanel pop = new PersonOverviewPanel();
@@ -33,8 +33,14 @@ public class Admin {
             personController.addModel(new PersonTableModel(DataBaseManager.getInstance().getAllPeople()));
             personController.addView(pop);
             
-            window.getContentPane().add(pop);
+            JButton personButton = new JButton(IconManager.getInstance().getIcon(Icons.Persons));
+            personButton.setToolTipText("People");
             
+            window.add(personButton, pop);
+            window.setContent(pop);
+            
+            window.setTitle("The Mole");
+            window.setPreferredSize(new Dimension(1208, 720));
             window.pack();
             window.setVisible(true);
             
