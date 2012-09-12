@@ -6,8 +6,6 @@ import be.stijn.mole.model.PersonTableModel;
 import be.stijn.mole.view.IPersonView;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,7 +16,7 @@ import javax.swing.JOptionPane;
  * @since 22/08/2012 
  * @version 20120822.1 
  */
-public class PersonController implements IPersonController{
+public class PersonDaoController implements IPersonController{
     private PersonTableModel model;
     private IPersonView view;
 
@@ -46,7 +44,7 @@ public class PersonController implements IPersonController{
                 this.model.addPerson(p);
             } //else update
             catch (SQLException | ClassNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error while inserting", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, ex.getMessage(), "Error while inserting", JOptionPane.ERROR_MESSAGE);
             }
         }
         else {
@@ -54,7 +52,7 @@ public class PersonController implements IPersonController{
                 DataBaseManager.getInstance().updatePerson(p.getId(), p.getName(), p.getEmail());
                 this.model.updatePerson(p);
             } catch (ClassNotFoundException | SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error while updating", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, ex.getMessage(), "Error while updating", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -68,7 +66,7 @@ public class PersonController implements IPersonController{
                 DataBaseManager.getInstance().deletePerson(p.getId());
                 model.deletePerson(p);
             } catch (SQLException | ClassNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error while deleting", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, ex.getMessage(), "Error while deleting", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

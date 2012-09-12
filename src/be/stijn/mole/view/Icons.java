@@ -14,7 +14,8 @@ public enum Icons {
     Persons("people.png"),
     Cancel("cancel.png"),
     Game("game.png"),
-    Games("games.png");
+    Games("games.png"),
+    Show("show.png");
     
     private String iconName;
 

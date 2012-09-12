@@ -1,13 +1,13 @@
 package be.stijn.mole;
 
+import be.stijn.mole.controller.GameDaoController;
+import be.stijn.mole.controller.IGamesController;
 import be.stijn.mole.controller.IPersonController;
-import be.stijn.mole.controller.PersonController;
+import be.stijn.mole.controller.PersonDaoController;
 import be.stijn.mole.dao.DataBaseManager;
+import be.stijn.mole.model.GamesTableModel;
 import be.stijn.mole.model.PersonTableModel;
-import be.stijn.mole.view.IconManager;
-import be.stijn.mole.view.Icons;
-import be.stijn.mole.view.MoleFrame;
-import be.stijn.mole.view.PersonOverviewPanel;
+import be.stijn.mole.view.*;
 import java.awt.Dimension;
 import java.sql.SQLException;
 import javax.swing.*;
@@ -27,8 +27,21 @@ public class Admin {
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.initGui();
             
-            IPersonController personController = new PersonController();
-            PersonOverviewPanel pop = new PersonOverviewPanel();
+            //Games
+            IGamesController gamesController = new GameDaoController();
+            IGamesView gop = new GamesOverviewPanel();
+            
+            gamesController.addModel(new GamesTableModel(DataBaseManager.getInstance().getAllGames()));
+            gamesController.addView(gop);
+            
+            JButton gamesButton = new JButton(IconManager.getInstance().getIcon(Icons.Games));
+            gamesButton.setToolTipText("Games");
+            
+            window.add(gamesButton, gop);
+            
+            //Persons
+            IPersonController personController = new PersonDaoController();
+            IPersonView pop = new PersonOverviewPanel();
             
             personController.addModel(new PersonTableModel(DataBaseManager.getInstance().getAllPeople()));
             personController.addView(pop);
@@ -37,7 +50,8 @@ public class Admin {
             personButton.setToolTipText("People");
             
             window.add(personButton, pop);
-            window.setContent(pop);
+            
+            window.setContent(gop);
             
             window.setTitle("The Mole");
             window.setPreferredSize(new Dimension(1208, 720));

@@ -1,6 +1,8 @@
 package be.stijn.mole.dao;
 
+import be.stijn.mole.dao.factory.GameFactory;
 import be.stijn.mole.dao.factory.PersonFactory;
+import be.stijn.mole.model.Game;
 import be.stijn.mole.model.Person;
 import java.sql.*;
 import java.util.ArrayList;
@@ -59,9 +61,6 @@ public class DataBaseManager {
             ResultSet rs = stmt.executeQuery(SQL);
 
             returnValue = PersonFactory.getList(rs);
-            while (rs.next()) {
-                System.out.println(rs.getString("LastName") + ", " + rs.getString("FirstName"));
-            }
             rs.close();
             stmt.close();
         } finally {
@@ -141,5 +140,48 @@ public class DataBaseManager {
         } finally {
             closeConnection();
         }
+    }
+
+    /**
+     * Deletes the game with the given id from the database.
+     *
+     * @param id the id
+     */
+    public void deleteGame(int id) throws ClassNotFoundException, SQLException {
+        try {
+            getConnection();
+
+            String SQL = "DELETE Game WHERE id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(SQL);
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } finally {
+            closeConnection();
+        }
+    }
+    
+    /**
+     * Gets a list of all {@link Game} stored in the database.
+     *
+     * @return the list of {@link Game} object
+     */
+    public List<Game> getAllGames() throws SQLException, ClassNotFoundException {
+        List<Game> returnValue = new ArrayList<>();
+        
+        try {
+            getConnection();
+
+            String SQL = "SELECT g.id AS id, p.id AS personid, p.name AS name, p.email AS email FROM Game g INNER JOIN Person p ON p.id = g.mol ORDER BY id DESC";
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            returnValue = GameFactory.getList(rs);
+            rs.close();
+            stmt.close();
+        } finally {
+            closeConnection();
+        }
+
+        return returnValue;
     }
 }

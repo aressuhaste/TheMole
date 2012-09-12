@@ -6,8 +6,8 @@ package be.stijn.mole.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import static org.junit.Assert.assertEquals;
 import org.junit.*;
-import static org.junit.Assert.*;
 
 /**
  *

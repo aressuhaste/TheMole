@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 public class MoleFrame extends JFrame {
     private JPanel buttonPanel;
     private Container contentPane;
+    private IView currentView;
     
     public MoleFrame() {
         super();
@@ -39,7 +40,11 @@ public class MoleFrame extends JFrame {
     }
     
     public void setContent(IView view) {
+        if(currentView != null)
+            contentPane.remove(currentView);
+        
         contentPane.add(view,BorderLayout.CENTER);
+        currentView = view;
     }
     
     private class ViewButtonListener implements ActionListener {
@@ -52,6 +57,7 @@ public class MoleFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             setContent(view);
+            pack();
         }
     }
 }
